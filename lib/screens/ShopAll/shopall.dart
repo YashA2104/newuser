@@ -5,6 +5,10 @@ import 'package:KartexFinal/size_config.dart';
 import 'package:flutter/material.dart';
 
 class Shopall extends StatelessWidget {
+  String type;
+  Shopall({
+    @required this.type,
+});
   static String routeName = '/Shopall';
   @override
   Widget build(BuildContext context) {

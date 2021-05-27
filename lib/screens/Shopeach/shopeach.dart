@@ -5,6 +5,17 @@ import 'package:KartexFinal/size_config.dart';
 import 'package:flutter/material.dart';
 
 class Shopeach extends StatelessWidget {
+  String shopImage,deliveryTiming,location,phoneNumber,catImage,id,shopName;
+  Shopeach({
+    @required this.shopImage,
+    @required this.id,
+    @required this.catImage,
+    @required this.deliveryTiming,
+    @required this.location,
+    @required this.phoneNumber,
+    @required this.shopName,
+
+});
   static String routeName = '/Shopeach';
   @override
   Widget build(BuildContext context) {
@@ -23,7 +34,7 @@ class Shopeach extends StatelessWidget {
         ),
         elevation: 0,
         title: Text(
-          'Shop name',
+          shopName,
           style: TextStyle(
             fontFamily: 'Muli',
             fontSize: getProportionateScreenWidth(20),
@@ -32,7 +43,7 @@ class Shopeach extends StatelessWidget {
           ),
         ),
       ),
-      body: ShopeachBody(),
+      body: ShopeachBody(shopImage: shopImage ,catImage: catImage,deliveryTiming: deliveryTiming,shopName: shopName,id: id,location: location,phoneNumber: phoneNumber,),
     );
   }
 }

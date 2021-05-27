@@ -2,19 +2,61 @@ import 'package:KartexFinal/constants.dart';
 import 'package:KartexFinal/screens/Shopeach/shopeach.dart';
 import 'package:KartexFinal/screens/home/components/search_field.dart';
 import 'package:KartexFinal/size_config.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ShopAllBody extends StatelessWidget {
+  String type;
+  ShopAllBody({
+    @required this.type,
+});
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SeachShop(),
-        ShopContainer(
-          press: () {
-            Navigator.pushNamed(context, Shopeach.routeName);
-          },
+        Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: StreamBuilder <QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('shop').snapshots(),
+            builder: (context , snapshots){
+              final List<DocumentSnapshot> documents = snapshots.data.docs;
+              return documents.isNotEmpty? ListView(
+                children: documents.map((doc)  =>
+                    GestureDetector(
+                      onTap: () async {
+                        print(doc.id);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Shopeach(
+                          phoneNumber: doc['phoneNumber'],
+                          location:  doc['address'],
+                          id: doc['userID'],
+                          shopName: doc['shopName'],
+                          deliveryTiming: doc['deliveryTiming'],
+                          catImage: doc['catImage'],
+                          shopImage: doc['shopImage'],
+                        ) ));
+                      },
+                      child: ShopContainer(
+                        shopName: doc['shopName'],
+                            shopAddress: doc['address'],
+                            shopImage: doc['shopImage'],
+                            press: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => Shopeach(
+                                shopImage: doc['shopImage'],
+                                shopName: doc['shopName'],
+                                catImage: doc['catImage'],
+                                deliveryTiming: doc['deliveryTiming'],
+                                id: doc['userID'],
+                                location: doc['address'],
+                                phoneNumber: doc['phoneNumber'],
+
+                              )));
+                              },),
+                    )).toList(),
+              ) : CircularProgressIndicator();
+            },
+          ),
         ),
       ],
     );
@@ -56,11 +98,14 @@ class SeachShop extends StatelessWidget {
     );
   }
 }
-
 class ShopContainer extends StatelessWidget {
-  const ShopContainer({
+   String shopImage,shopName,shopAddress;
+   ShopContainer({
     Key key,
     @required this.press,
+    @required this.shopName,
+    @required this.shopAddress,
+    @required this.shopImage,
   }) : super(key: key);
   final GestureTapCallback press;
   @override
@@ -91,13 +136,9 @@ class ShopContainer extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(getProportionateScreenWidth(15)),
-                    child: Container(
-                      height: getProportionateScreenWidth(120),
-                      width: getProportionateScreenWidth(120),
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(
-                              getProportionateScreenWidth(15))),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(shopImage),
                     ),
                   ),
                   Padding(
@@ -109,7 +150,7 @@ class ShopContainer extends StatelessWidget {
                           height: getProportionateScreenWidth(20),
                         ),
                         Text(
-                          'Prashant Medical',
+                          shopName,
                           style: TextStyle(
                               fontSize: getProportionateScreenWidth(17),
                               fontFamily: 'Muli',
@@ -142,7 +183,8 @@ class ShopContainer extends StatelessWidget {
                         ),
                         FittedBox(
                           child: Text(
-                            'Anand Palace no 9',
+                            shopAddress,
+                            softWrap: true,
                             style: TextStyle(
                                 fontSize: getProportionateScreenWidth(12),
                                 fontFamily: 'Muli',

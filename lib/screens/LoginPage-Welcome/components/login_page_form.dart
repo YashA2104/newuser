@@ -24,10 +24,11 @@ class LoginPageForm extends StatelessWidget {
     getValues();
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    UserCredential user = await firebaseAuth.signInWithEmailAndPassword(
+    await firebaseAuth.signInWithEmailAndPassword(
         email: email, password: pass);
+    User user = FirebaseAuth.instance.currentUser;
     String Uid;
-    Uid = user.user.uid;
+    Uid = user.uid;
     Fluttertoast.showToast(msg: Uid);
     DocumentSnapshot doc = await firebaseFirestore
         .collection('Customer')

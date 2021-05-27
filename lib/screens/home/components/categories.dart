@@ -27,7 +27,7 @@ class Categories extends StatelessWidget {
             icon: categories[index]["icon"],
             text: categories[index]["text"],
             press: () {
-              Navigator.pushNamed(context, Shopall.routeName);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Shopall(type: categories[index]["text"])));
             },
           ),
         ),

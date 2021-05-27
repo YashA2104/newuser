@@ -12,48 +12,51 @@ class DiscountBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          height: getProportionateScreenWidth(190),
-          width: double.infinity,
-          margin: EdgeInsets.all(getProportionateScreenWidth(20)),
-          // padding: EdgeInsets.symmetric(
-          //   horizontal: getProportionateScreenWidth(20),
-          //   vertical: getProportionateScreenWidth(15),
-          // ),
-          decoration: BoxDecoration(
-             boxShadow: [
-          BoxShadow(
-            blurRadius: getProportionateScreenWidth(15),
-            color: Colors.black12.withOpacity(0.2),
-            offset: Offset(0, 4),
-          ),
-        ],
-            color: kPrimaryColor,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Carousel(
-            dotSize: 4.0,
-            dotSpacing: 15.0,
-            dotColor: Colors.black45,
-            indicatorBgPadding: 5.0,
-            dotBgColor: Colors.transparent,
-            dotVerticalPadding: 5.0,
-            dotPosition: DotPosition.bottomRight,
-            dotIncreasedColor: kSecondaryColor,
-            images: [
-              Image.asset(
-                'assets/images/splash_1gif.gif',
-                fit: BoxFit.cover,
-              ),
-              Image.asset(
-                'assets/images/splash_2.png',
-                fit: BoxFit.cover,
-              ),
-              Image.asset(
-                'assets/images/splash_3.png',
-                fit: BoxFit.cover,
-              ),
-            ],
+        ClipRRect(
+          borderRadius: BorderRadius.circular(getProportionateScreenWidth(15)),
+          child: Container(
+            height: getProportionateScreenWidth(190),
+            width: double.infinity,
+            margin: EdgeInsets.all(getProportionateScreenWidth(20)),
+            // padding: EdgeInsets.symmetric(
+            //   horizontal: getProportionateScreenWidth(20),
+            //   vertical: getProportionateScreenWidth(15),
+            // ),
+            decoration: BoxDecoration(
+               boxShadow: [
+            BoxShadow(
+              blurRadius: getProportionateScreenWidth(15),
+              color: Colors.black12.withOpacity(0.2),
+              offset: Offset(0, 4),
+            ),
+          ],
+              color: kPrimaryColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Carousel(
+              dotSize: 4.0,
+              dotSpacing: 15.0,
+              dotColor: Colors.black45,
+              indicatorBgPadding: 5.0,
+              dotBgColor: Colors.transparent,
+              dotVerticalPadding: 5.0,
+              dotPosition: DotPosition.bottomRight,
+              dotIncreasedColor: kSecondaryColor,
+              images: [
+                Image.asset(
+                  'assets/images/splash_1gif.gif',
+                  fit: BoxFit.cover,
+                ),
+                Image.asset(
+                  'assets/images/splash_2.png',
+                  fit: BoxFit.cover,
+                ),
+                Image.asset(
+                  'assets/images/splash_3.png',
+                  fit: BoxFit.cover,
+                ),
+              ],
+            ),
           ),
         ),
         Positioned(

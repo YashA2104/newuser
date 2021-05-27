@@ -2,8 +2,27 @@ import 'package:KartexFinal/constants.dart';
 import 'package:KartexFinal/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ShopeachBody extends StatelessWidget {
+class ShopeachBody extends StatefulWidget {
+
+  String shopImage,deliveryTiming,location,phoneNumber,catImage,id,shopName;
+  ShopeachBody({
+    @required this.shopImage,
+    @required this.id,
+    @required this.catImage,
+    @required this.deliveryTiming,
+    @required this.location,
+    @required this.phoneNumber,
+    @required this.shopName,
+
+  });
+
+  @override
+  _ShopeachBodyState createState() => _ShopeachBodyState();
+}
+
+class _ShopeachBodyState extends State<ShopeachBody> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -11,7 +30,7 @@ class ShopeachBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ContainerMulti(),
+          ContainerMulti(shopImage: widget.shopImage,),
           SizedBox(
             height: getProportionateScreenWidth(10),
           ),
@@ -21,7 +40,7 @@ class ShopeachBody extends StatelessWidget {
           ),
           detailsContainer(
             color: kSecondaryColor,
-            text: 'Timings :',
+            text: widget.deliveryTiming + ' Hours',
             colortoo: kPrimaryColor,
             svg: 'assets/images/clock.svg',
           ),
@@ -30,7 +49,7 @@ class ShopeachBody extends StatelessWidget {
           ),
           detailsContainer(
             color: kPrimaryColor,
-            text: 'Location:',
+            text: 'Location: ' + widget.location,
             colortoo: kSecondaryColor,
             svg: 'assets/images/map-pin.svg',
           ),
@@ -45,7 +64,7 @@ class ShopeachBody extends StatelessWidget {
           SizedBox(
             height: getProportionateScreenWidth(10),
           ),
-          ContainerMulti(),
+          ContainerMulti(shopImage: widget.catImage,),
           SizedBox(height: getProportionateScreenWidth(15)),
         ],
       ),
@@ -75,10 +94,20 @@ class ViewShopgallery extends StatelessWidget {
     );
   }
 }
+_makingPhoneCall(String phone) async {
+  String url = 'tel:$phone';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
 class Messages extends StatelessWidget {
-  const Messages({
+  String phone;
+  Messages({
     Key key,
+  @required this.phone,
   }) : super(key: key);
 
   @override
@@ -88,7 +117,7 @@ class Messages extends StatelessWidget {
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
       child: Row(
         children: [
-          ContainerHalf(),
+          ContainerHalf(phone: phone,),
           SizedBox(
             width: getProportionateScreenWidth(10),
           ),
@@ -152,41 +181,48 @@ class ShopDetails extends StatelessWidget {
 }
 
 class ContainerHalf extends StatelessWidget {
-  const ContainerHalf({
+  String phone;
+  ContainerHalf({
+    @required this.phone,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: getProportionateScreenWidth(120),
-          width: getProportionateScreenWidth(170),
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: getProportionateScreenWidth(18),
-                top: getProportionateScreenWidth(10)),
-            child: Text(
-              'Call Shop:',
-              style: TextStyle(
-                fontFamily: 'Muli',
-                fontSize: getProportionateScreenWidth(18),
-                fontWeight: FontWeight.bold,
-                color: kSecondaryLightColor,
+    return InkWell(
+      onTap: (){
+        _makingPhoneCall(phone);
+      },
+      child: Stack(
+        children: [
+          Container(
+            height: getProportionateScreenWidth(120),
+            width: getProportionateScreenWidth(170),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: getProportionateScreenWidth(18),
+                  top: getProportionateScreenWidth(10)),
+              child: Text(
+                'Call Shop:',
+                style: TextStyle(
+                  fontFamily: 'Muli',
+                  fontSize: getProportionateScreenWidth(18),
+                  fontWeight: FontWeight.bold,
+                  color: kSecondaryLightColor,
+                ),
               ),
             ),
+            decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius:
+                    BorderRadius.circular(getProportionateScreenWidth(15))),
           ),
-          decoration: BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius:
-                  BorderRadius.circular(getProportionateScreenWidth(15))),
-        ),
-        Positioned(
-            top: getProportionateScreenWidth(45),
-            left: getProportionateScreenWidth(55),
-            child: SvgPicture.asset('assets/images/phone-call.svg'))
-      ],
+          Positioned(
+              top: getProportionateScreenWidth(45),
+              left: getProportionateScreenWidth(55),
+              child: SvgPicture.asset('assets/images/phone-call.svg'))
+        ],
+      ),
     );
   }
 }
@@ -269,7 +305,9 @@ class detailsContainer extends StatelessWidget {
 }
 
 class ContainerMulti extends StatelessWidget {
-  const ContainerMulti({
+  String shopImage;
+  ContainerMulti({
+    @required this.shopImage,
     Key key,
   }) : super(key: key);
 
@@ -285,6 +323,7 @@ class ContainerMulti extends StatelessWidget {
           color: kPrimaryColor,
           borderRadius: BorderRadius.circular(getProportionateScreenWidth(15)),
         ),
+        child: Image.network(shopImage),
       ),
     );
   }
