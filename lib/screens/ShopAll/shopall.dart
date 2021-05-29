@@ -44,7 +44,7 @@ class Shopall extends StatelessWidget {
               ))
         ],
       ),
-      body: ShopAllBody(),
+      body: ShopAllBody(type: type,),
     );
   }
 }

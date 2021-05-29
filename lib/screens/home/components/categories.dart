@@ -13,7 +13,7 @@ class Categories extends StatelessWidget {
       {"icon": "assets/icons/smartphone_white_24dp.svg", "text": "Electronics"},
       {"icon": "assets/icons/grocery.svg", "text": "Groceries"},
       {"icon": "assets/icons/liquor_white_24dp.svg", "text": "Liquor"},
-      {"icon": "assets/icons/medication_white_24dp.svg", "text": "Medicines"},
+      {"icon": "assets/icons/medication_white_24dp.svg", "text": "Medicine"},
       {"icon": "assets/icons/milk-bottle.svg", "text": "Daily Needs"},
     ];
     return Padding(
@@ -28,6 +28,7 @@ class Categories extends StatelessWidget {
             text: categories[index]["text"],
             press: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => Shopall(type: categories[index]["text"])));
+              print(categories[index]["text"]);
             },
           ),
         ),

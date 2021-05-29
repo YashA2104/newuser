@@ -1,12 +1,15 @@
 import 'package:KartexFinal/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 
 class DiscountBanner extends StatelessWidget {
-  const DiscountBanner({
+  DiscountBanner({
     Key key,
   }) : super(key: key);
+
+  var doc = FirebaseFirestore.instance.collection('carouselImages').doc().get();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,7 @@ class DiscountBanner extends StatelessWidget {
               dotIncreasedColor: kSecondaryColor,
               images: [
                 Image.asset(
-                  'assets/images/splash_1gif.gif',
+                  'assets/images/splash_3.png',
                   fit: BoxFit.cover,
                 ),
                 Image.asset(
@@ -67,7 +70,7 @@ class DiscountBanner extends StatelessWidget {
               style: TextStyle(color: Colors.white),
               children: [
                 TextSpan(text: "Welcome to Kartex" ,style: TextStyle(fontWeight: FontWeight.bold, fontSize: getProportionateScreenWidth(20),color: kPrimaryColor)),
-               
+
               ],
             ),
           ),

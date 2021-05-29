@@ -1,5 +1,7 @@
 import 'package:KartexFinal/constants.dart';
+import 'package:KartexFinal/screens/MessagingInterior/chat_interior.dart';
 import 'package:KartexFinal/size_config.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -56,7 +58,7 @@ class _ShopeachBodyState extends State<ShopeachBody> {
           SizedBox(
             height: getProportionateScreenWidth(10),
           ),
-          Messages(),
+          Messages(id: widget.id,),
           SizedBox(
             height: getProportionateScreenWidth(10),
           ),
@@ -104,10 +106,11 @@ _makingPhoneCall(String phone) async {
 }
 
 class Messages extends StatelessWidget {
-  String phone;
+  String phone,id;
   Messages({
     Key key,
   @required this.phone,
+    @required this.id,
   }) : super(key: key);
 
   @override
@@ -121,35 +124,41 @@ class Messages extends StatelessWidget {
           SizedBox(
             width: getProportionateScreenWidth(10),
           ),
-          Stack(
-            children: [
-              Container(
-                height: getProportionateScreenWidth(120),
-                width: getProportionateScreenWidth(170),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: getProportionateScreenWidth(10),
-                      top: getProportionateScreenWidth(10)),
-                  child: Text(
-                    'Message:',
-                    style: TextStyle(
-                      fontFamily: 'Muli',
-                      fontSize: getProportionateScreenWidth(18),
-                      fontWeight: FontWeight.bold,
-                      color: kPrimaryColor,
+          InkWell(
+            onTap: () async{
+              var doc = await FirebaseFirestore.instance.collection('shop').doc(id).get();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ChatInterior(shopImage: doc['shopImage'], phoneNumber: doc['phoneNumber'], id: id, shopName: doc['shopName'])));
+            },
+            child: Stack(
+              children: [
+                Container(
+                  height: getProportionateScreenWidth(120),
+                  width: getProportionateScreenWidth(170),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: getProportionateScreenWidth(10),
+                        top: getProportionateScreenWidth(10)),
+                    child: Text(
+                      'Message:',
+                      style: TextStyle(
+                        fontFamily: 'Muli',
+                        fontSize: getProportionateScreenWidth(18),
+                        fontWeight: FontWeight.bold,
+                        color: kPrimaryColor,
+                      ),
                     ),
                   ),
+                  decoration: BoxDecoration(
+                      color: kPrimaryLightColor,
+                      borderRadius:
+                          BorderRadius.circular(getProportionateScreenWidth(15))),
                 ),
-                decoration: BoxDecoration(
-                    color: kPrimaryLightColor,
-                    borderRadius:
-                        BorderRadius.circular(getProportionateScreenWidth(15))),
-              ),
-              Positioned(
-                  top: getProportionateScreenWidth(45),
-                  left: getProportionateScreenWidth(57),
-                  child: SvgPicture.asset('assets/images/message-circle.svg'))
-            ],
+                Positioned(
+                    top: getProportionateScreenWidth(45),
+                    left: getProportionateScreenWidth(57),
+                    child: SvgPicture.asset('assets/images/message-circle.svg'))
+              ],
+            ),
           ),
         ],
       ),

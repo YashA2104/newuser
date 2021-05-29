@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'components/body.dart';
 
 class ProfileScreen extends StatelessWidget {
+  String profileImage;
+  ProfileScreen({
+    @required this.profileImage,
+});
   static String routeName = "/profile";
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class ProfileScreen extends StatelessWidget {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Body(),
+      body: Body(profileImage: profileImage,),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.profile),
     );
   }

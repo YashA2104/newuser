@@ -3,6 +3,8 @@ import 'package:KartexFinal/screens/Wishlist/wishlist.dart';
 import 'package:KartexFinal/screens/enums.dart';
 import 'package:KartexFinal/screens/home/home_screen.dart';
 import 'package:KartexFinal/screens/profile/profile_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -79,8 +81,12 @@ class CustomBottomNavBar extends StatelessWidget {
                       ? kSecondaryColor
                       : inActiveIconColor,
                 ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, ProfileScreen.routeName),
+                onPressed: () async {
+                  var doc= await FirebaseFirestore.instance.collection('Customer').doc(FirebaseAuth.instance.currentUser.uid).collection('user').doc('details').get();
+                  var picPath = doc['userImage'];
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfileScreen(profileImage: picPath,)));
+
+                }
               ),
             ],
           )),

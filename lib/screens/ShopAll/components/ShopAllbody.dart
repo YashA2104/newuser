@@ -23,10 +23,9 @@ class ShopAllBody extends StatelessWidget {
             builder: (context , snapshots){
               final List<DocumentSnapshot> documents = snapshots.data.docs;
               return documents.isNotEmpty? ListView(
-                children: documents.map((doc)  =>
-                    GestureDetector(
+                children: documents.where((element) => element['shopType'] == type).map((doc)  =>
+                    InkWell(
                       onTap: () async {
-                        print(doc.id);
                         Navigator.push(context, MaterialPageRoute(builder: (context) => Shopeach(
                           phoneNumber: doc['phoneNumber'],
                           location:  doc['address'],
@@ -35,7 +34,12 @@ class ShopAllBody extends StatelessWidget {
                           deliveryTiming: doc['deliveryTiming'],
                           catImage: doc['catImage'],
                           shopImage: doc['shopImage'],
-                        ) ));
+
+                        ),
+
+                        ),
+
+                        );
                       },
                       child: ShopContainer(
                         shopName: doc['shopName'],

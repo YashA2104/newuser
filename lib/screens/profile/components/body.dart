@@ -11,13 +11,17 @@ import 'profile_menu.dart';
 import 'profile_pic.dart';
 
 class Body extends StatelessWidget {
+  String profileImage;
+  Body({
+    @required this.profileImage,
+});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
-          ProfilePic(),
+          ProfilePic(profilePic: profileImage,),
           SizedBox(height: 20),
           ProfileMenu(
             text: "My Account",
